@@ -29,6 +29,7 @@ jobs:
       # 2. Node.js環境をセットアップ
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        id: node_setup
         with:
           node-version: '22' # LTS版のNode.jsバージョンを指定
 
@@ -38,11 +39,11 @@ jobs:
 
       # 4. Playwright用のブラウザをインストール ( --with-deps を付けない)
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: ${{ steps.node_setup.outputs.bin-path }}/npx playwright install
 
       # 5. Playwrightでテストを実行
       - name: Run Playwright tests
-        run: npm test
+        run: ${{ steps.node_setup.outputs.bin-path }}/npx playwright test
 
       # 6. デプロイするファイルをアーティファクトとしてアップロード
       #    今回はリポジトリのルートにあるファイル全てをアップロード
