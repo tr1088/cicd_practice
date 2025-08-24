@@ -40,6 +40,7 @@ jobs:
       - name: Run Playwright tests
         uses: microsoft/playwright-github-action@v1
         with:
+          install-deps: false
           run: npm test
 
       # 5. デプロイするファイルをアーティファクトとしてアップロード
