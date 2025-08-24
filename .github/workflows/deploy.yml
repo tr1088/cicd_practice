@@ -36,22 +36,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Playwright用のブラウザをインストール
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps # --with-depsでLinux環境で必要な依存関係もインストール
-
-      # 5. Playwrightでテストを実行
+      # 4. Playwrightのセットアップとテスト実行
       - name: Run Playwright tests
-        run: npm test
+        uses: microsoft/playwright-github-action@v1
+        with:
+          run: npm test
 
-      # 6. デプロイするファイルをアーティファクトとしてアップロード
+      # 5. デプロイするファイルをアーティファクトとしてアップロード
       #    今回はリポジトリのルートにあるファイル全てをアップロード
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
-      # 7. GitHub Pagesにデプロイ
+      # 6. GitHub Pagesにデプロイ
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
