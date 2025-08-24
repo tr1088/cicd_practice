@@ -39,11 +39,11 @@ jobs:
 
       # 4. Playwright用のブラウザをインストール ( --with-deps を付けない)
       - name: Install Playwright browsers
-        run: ${{ steps.node_setup.outputs.bin-path }}/npx playwright install
+        run: npm exec playwright install
 
       # 5. Playwrightでテストを実行
       - name: Run Playwright tests
-        run: ${{ steps.node_setup.outputs.bin-path }}/npx playwright test
+        run: npm test
 
       # 6. デプロイするファイルをアーティファクトとしてアップロード
       #    今回はリポジトリのルートにあるファイル全てをアップロード
