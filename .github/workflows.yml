@@ -1,0 +1,57 @@
+# ワークフローの名前
+name: Deploy to GitHub Pages
+
+# ワークフローが実行されるタイミング
+on:
+  push:
+    branches:
+      - main # mainブランチにプッシュされた時だけ実行
+
+# 実行するジョブ（タスク）を定義
+jobs:
+  # ジョブID（任意の名前）
+  build-and-deploy:
+    # 実行する環境
+    runs-on: ubuntu-latest
+
+    # GitHub Pagesへのデプロイに必要な権限設定
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    # 実行するステップを順番に記述
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js環境をセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # LTS版のNode.jsバージョンを指定
+
+      # 3. 依存パッケージをインストール
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Playwright用のブラウザをインストール
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps # --with-depsでLinux環境で必要な依存関係もインストール
+
+      # 5. Playwrightでテストを実行
+      - name: Run Playwright tests
+        run: npm test
+
+      # 6. デプロイするファイルをアーティファクトとしてアップロード
+      #    今回はリポジトリのルートにあるファイル全てをアップロード
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      # 7. GitHub Pagesにデプロイ
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
