@@ -37,22 +37,26 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Playwright用のブラウザをインストール ( --with-deps を付けない)
+      # 4. 実行権限を追加する
+      - name: Grant execute permission to Playwright
+        run: chmod +x ./node_modules/.bin/playwright
+
+      # 5. Playwright用のブラウザをインストール ( --with-deps を付けない)
       - name: Install Playwright browsers
         run: npm exec playwright install
 
-      # 5. Playwrightでテストを実行
+      # 6. Playwrightでテストを実行
       - name: Run Playwright tests
         run: npm test
 
-      # 6. デプロイするファイルをアーティファクトとしてアップロード
+      # 7. デプロイするファイルをアーティファクトとしてアップロード
       #    今回はリポジトリのルートにあるファイル全てをアップロード
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
-      # 7. GitHub Pagesにデプロイ
+      # 8. GitHub Pagesにデプロイ
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
