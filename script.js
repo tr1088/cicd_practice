@@ -100,7 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // localStorageにデータを保存
-            localStorage.setItem('registrationData', JSON.stringify(registrationData));
+            // 現在の日時をミリ秒で取得して、キーの一部にする
+            const timestamp = Date.now();
+            const uniqueKey = `registrationData-${timestamp}`;
+
+            // 作成したユニークなキーでlocalStorageにデータを保存
+            localStorage.setItem(uniqueKey, JSON.stringify(registrationData));
 
             // 登録完了ページに遷移
             window.location.href = 'complete.html';
