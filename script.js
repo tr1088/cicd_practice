@@ -100,15 +100,27 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // localStorageにデータを保存
-            // 現在の日時をミリ秒で取得して、キーの一部にする
-            const timestamp = Date.now();
+            // 現在の日時を取得
+            const now = new Date();
+
+            // 各要素を取得し、必要に応じて0を補完（ゼロパディング）
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため+1
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+            // yyyymmddhhmmss形式の文字列を作成
+            const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}`;
             const uniqueKey = `registrationData-${timestamp}`;
 
             // 作成したユニークなキーでlocalStorageにデータを保存
             localStorage.setItem(uniqueKey, JSON.stringify(registrationData));
 
-            // 登録完了ページに遷移
-            window.location.href = 'complete.html';
+            // 登録完了ページに、どのキーで保存したかを伝えながら遷移
+            window.location.href = `complete.html?key=${uniqueKey}`;
         }
     });
 

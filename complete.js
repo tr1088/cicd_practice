@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // localStorageから登録データを取得
-    const registrationDataJSON = localStorage.getItem('registrationData');
+    // URLからキー情報を取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const key = urlParams.get('key');
+
+    // 取得したキーを使ってlocalStorageからデータを取得
+    const registrationDataJSON = key ? localStorage.getItem(key) : null;
 
     if (registrationDataJSON) {
         // JSON文字列をオブジェクトに変換
@@ -15,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('display-price').textContent = data.price;
 
         // 一度表示したら不要なデータを消去する（リロード時に再表示されないように）
-        // sessionStorage.removeItem('registrationData'); 
+        // localStorage.removeItem('registrationData'); 
         // ↑必要であればコメントアウトを解除
 
     } else {
