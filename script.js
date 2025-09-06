@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // localStorageにデータを保存
-            localStoragee.setItem('registrationData', JSON.stringify(registrationData));
+            localStorage.setItem('registrationData', JSON.stringify(registrationData));
 
             // 登録完了ページに遷移
             window.location.href = 'complete.html';
