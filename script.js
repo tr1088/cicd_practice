@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: totalPriceEl.textContent
             };
 
-            // sessionStorageにデータを保存
-            sessionStorage.setItem('registrationData', JSON.stringify(registrationData));
+            // localStorageにデータを保存
+            localStoragee.setItem('registrationData', JSON.stringify(registrationData));
 
             // 登録完了ページに遷移
             window.location.href = 'complete.html';

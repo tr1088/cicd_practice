@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // sessionStorageから登録データを取得
-    const registrationDataJSON = sessionStorage.getItem('registrationData');
+    // localStorageから登録データを取得
+    const registrationDataJSON = localStorage.getItem('registrationData');
 
     if (registrationDataJSON) {
         // JSON文字列をオブジェクトに変換
