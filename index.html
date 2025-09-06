@@ -1,15 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>自動テストとデプロイの練習</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テスト設計練習用サイト | イベント登録</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>こんにちは！</h1>
-  <p id="message">ボタンを押してください。</p>
-  <button id="actionButton">クリック！</button>
-  <script src="script.js"></script>
+    <header>
+        <h1>テスト設計練習用サイト</h1>
+    </header>
+
+    <main>
+        <div class="status-panel">
+            <h2>イベントステータス</h2>
+            <p id="event-status-text">募集中 (Open)</p>
+            <div class="status-controls">
+                <button id="btn-set-full">満員にする</button>
+                <button id="btn-set-cancelled">中止にする</button>
+                <button id="btn-reset-status">リセット</button>
+            </div>
+        </div>
+
+        <form id="registration-form" novalidate>
+            <h2>イベント参加登録フォーム</h2>
+            <div id="form-blocker">
+                <p id="blocker-message"></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">氏名 <span class="required">(必須)</span> (1〜50文字)</label>
+                <input type="text" id="name" name="name" required minlength="1" maxlength="5000">
+                <div class="error-message" id="name-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="age">年齢 <span class="required">(必須)</span> (18〜99歳)</label>
+                <input type="number" id="age" name="age" required min="18" max="99">
+                <div class="error-message" id="age-error"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">メールアドレス <span class="required">(必須)</span></label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message" id="email-error"></div>
+            </div>
+            
+            <fieldset class="form-group">
+                <legend>参加プラン <span class="required">(必須)</span></legend>
+                <label>
+                    <input type="radio" name="plan" value="5000" data-plan-name="一般参加" required> 一般参加 (5,000円)
+                </label>
+                <label>
+                    <input type="radio" name="plan" value="4000" data-plan-name="会員"> 会員 (4,000円)
+                </label>
+                <div class="error-message" id="plan-error"></div>
+            </fieldset>
+            <div class="form-group">
+                <label for="participants">参加人数 <span class="required">(必須)</span> (1〜10人)</label>
+                <input type="number" id="participants" name="participants" required min="1" max="10" value="1">
+                <div class="error-message" id="participants-error"></div>
+            </div>
+            
+            <div class="price-display">
+                <h3>合計金額</h3>
+                <p id="total-price">0円</p>
+            </div>
+            
+            <button type="submit" id="submit-btn">登録する</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Test Practice Site</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
