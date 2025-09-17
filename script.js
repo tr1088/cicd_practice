@@ -1,16 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 要素を取得する
     const form = document.getElementById('registration-form');
     const planRadios = document.querySelectorAll('input[name="plan"]');
     const participantsInput = document.getElementById('participants');
     const totalPriceEl = document.getElementById('total-price');
     
-    // Status control elements
+    // イベントステータスを制御するための要素
     const statusText = document.getElementById('event-status-text');
     const formBlocker = document.getElementById('form-blocker');
     const blockerMessage = document.getElementById('blocker-message');
     const submitBtn = document.getElementById('submit-btn');
 
-    // --- State Management ---
+     // イベントステータスに応じてフォームの有効/無効を切り替える
     const updateFormState = (status) => {
         statusText.classList.remove('full', 'cancelled');
         if (status === 'Open') {
@@ -31,11 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    // 各ボタンがクリックされたら、ステータスを更新する
     document.getElementById('btn-set-full').addEventListener('click', () => updateFormState('Full'));
     document.getElementById('btn-set-cancelled').addEventListener('click', () => updateFormState('Cancelled'));
     document.getElementById('btn-reset-status').addEventListener('click', () => updateFormState('Open'));
 
-    // --- Price Calculation ---
+    // 選択されたプランと人数に応じて合計金額を計算・表示する
     const calculatePrice = () => {
         const selectedPlan = document.querySelector('input[name="plan"]:checked');
         const planPrice = selectedPlan ? parseInt(selectedPlan.value, 10) : 0;
@@ -45,21 +48,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         let totalPrice = planPrice * participants;
+        // 5名以上の場合は10%割引を適用
         if (participants >= 5) {
-            totalPrice *= 0.90; // 10% discount
+            totalPrice *= 0.90;
         }
         totalPriceEl.textContent = `${Math.floor(totalPrice).toLocaleString()}円`;
     };
+    // プラン選択や人数入力が変更されるたびに、金額を再計算する
     planRadios.forEach(radio => radio.addEventListener('change', calculatePrice));
     participantsInput.addEventListener('input', calculatePrice);
     
-    // --- Form Validation and Submission ---
+    // 「登録する」ボタンがクリックされたときの処理
     form.addEventListener('submit', (e) => {
+        // デフォルトの送信動作（ページリロード）を防ぐ
         e.preventDefault();
+        // 前回のエラーメッセージをリセット
         document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
         let isValid = true;
         
-        // Validation logic...
+        // 入力値のバリデーション
         const nameInput = document.getElementById('name');
         if (nameInput.value.length < 1 || nameInput.value.length > 50) {
             document.getElementById('name-error').textContent = '氏名は1文字以上50文字以下で入力してください。';
@@ -72,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         }
         const emailInput = document.getElementById('email');
+        // メールアドレスの形式をチェックするための正規表現
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailInput.value.match(emailRegex)) {
             document.getElementById('email-error').textContent = '有効なメールアドレスを入力してください。';
@@ -88,13 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         }
         
+        // 全てのバリデーションを通過した場合のみ、次の処理へ進む
         if (isValid) {
             // 登録データをオブジェクトにまとめる
             const registrationData = {
                 name: nameInput.value,
                 age: ageInput.value,
                 email: emailInput.value,
-                planName: selectedPlanRadio.dataset.planName, // ラジオボタンのdata属性からプラン名を取得
+                planName: selectedPlanRadio.dataset.planName,
                 participants: participantsInput.value,
                 price: totalPriceEl.textContent
             };
@@ -124,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial setup
+    // ページ表示時の初期化処理
     calculatePrice();
     updateFormState('Open');
 });
